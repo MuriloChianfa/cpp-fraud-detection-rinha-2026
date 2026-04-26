@@ -1,5 +1,5 @@
 x-image: &image
-  image: murilochianfa/cpp-fraud-detection-rinha-2026:latest
+  image: ghcr.io/murilochianfa/cpp-fraud-detection-rinha-2026:latest
 
 x-rinha-net-sysctls: &rinha-net-sysctls
   net.core.somaxconn: "65535"
@@ -19,10 +19,6 @@ x-rinha-ulimits: &rinha-ulimits
     hard: 1048576
   memlock: -1
 
-x-rinha-caps: &rinha-caps
-  - IPC_LOCK
-  - SYS_NICE
-
 services:
   api1:
     <<: *image
@@ -34,7 +30,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    cap_add: *rinha-caps
     deploy:
       resources:
         limits:
@@ -53,7 +48,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    cap_add: *rinha-caps
     deploy:
       resources:
         limits:
@@ -79,7 +73,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    cap_add: *rinha-caps
     deploy:
       resources:
         limits:
