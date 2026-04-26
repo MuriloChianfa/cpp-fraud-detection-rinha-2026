@@ -1,4 +1,4 @@
-# rinha-2026-cpp-drogon
+# cpp-fraud-detection-rinha-2026
 
 ![Banner](https://github.com/an-tao/drogon/wiki/images/drogon-white17.jpg)
 
@@ -26,20 +26,4 @@ Three Drogon-based services share a single Docker image:
 ```bash
 docker compose build
 docker compose up
-# server is on http://localhost:9999
 ```
-
-For local dev (without docker):
-
-```bash
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-./build/api 8001 &
-./build/api 8002 &
-./build/lb 9999 127.0.0.1:8001 127.0.0.1:8002
-```
-
-## Endpoints
-
-- `GET /ready` &mdash; 200 once both API instances are listening.
-- `POST /fraud-score` &mdash; see [API.md](https://github.com/zanfranceschi/rinha-de-backend-2026/blob/main/docs/br/API.md).

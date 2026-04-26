@@ -1,7 +1,7 @@
 {
   "participants": ["Murilo Chianfa"],
   "social": ["https://github.com/MuriloChianfa", "https://linkedin.com/in/murilochianfa"],
-  "source-code-repo": "https://github.com/murilochianfa/rinha-2026-cpp-drogon",
+  "source-code-repo": "https://github.com/murilochianfa/cpp-fraud-detection-rinha-2026",
   "stack": [
     "C++17",
     "Drogon",
