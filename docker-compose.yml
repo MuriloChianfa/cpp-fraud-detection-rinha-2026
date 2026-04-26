@@ -1,5 +1,5 @@
 x-image: &image
-  image: murilochianfa/cpp-fraud-detection-rinha-2026:latest
+  image: ghcr.io/murilochianfa/cpp-fraud-detection-rinha-2026:latest
 
 services:
   api1:
