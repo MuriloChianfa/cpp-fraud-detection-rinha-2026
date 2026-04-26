@@ -4,9 +4,6 @@ x-image: &image
 services:
   api1:
     <<: *image
-    build:
-      context: .
-      dockerfile: Dockerfile
     command: ["/api", "8001"]
     networks:
       - rinha
