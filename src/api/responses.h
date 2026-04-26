@@ -22,4 +22,4 @@ void init_responses();
 const drogon::HttpResponsePtr& fraudResp(uint8_t fraud_count) noexcept;
 const drogon::HttpResponsePtr& readyResp() noexcept;
 
-}  // namespace rinha
+}

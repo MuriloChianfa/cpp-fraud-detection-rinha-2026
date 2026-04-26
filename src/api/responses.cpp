@@ -17,11 +17,11 @@ drogon::HttpResponsePtr build_json(std::string_view body) {
     resp->setStatusCode(drogon::k200OK);
     resp->setContentTypeCode(drogon::CT_APPLICATION_JSON);
     resp->setBody(std::string(body));
-    resp->setExpiredTime(-1);  // reuse pre-rendered wire bytes for every request
+    resp->setExpiredTime(-1);
     return resp;
 }
 
-}  // namespace
+}
 
 void init_responses() {
     for (size_t i = 0; i < kBodies.size(); ++i) {
@@ -45,4 +45,4 @@ const drogon::HttpResponsePtr& readyResp() noexcept {
     return g_ready_response;
 }
 
-}  // namespace rinha
+}

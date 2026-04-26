@@ -1,9 +1,3 @@
-// Auto-generated from refs_data.S.in by CMake configure_file.
-// Embeds the build-time-quantised reference vectors and labels into the API
-// binary at link time. The .balign 64 directive guarantees that the start of
-// `rinha_refs_bin_start` is on a cache-line boundary, which keeps every AVX2
-// 32-byte load aligned and stops a single ref vector from straddling lines.
-
     .section .rodata,"a",@progbits
     .balign 64
     .globl rinha_refs_bin_start
@@ -27,5 +21,15 @@ rinha_labels_bin_start:
 rinha_labels_bin_end:
     .size rinha_labels_bin_start, rinha_labels_bin_end - rinha_labels_bin_start
 
-    // GNU note: don't request executable stack just because we are an asm TU.
+    .balign 64
+    .globl rinha_norms_bin_start
+    .hidden rinha_norms_bin_start
+    .type rinha_norms_bin_start, @object
+rinha_norms_bin_start:
+    .incbin "@NORMS_BIN@"
+    .globl rinha_norms_bin_end
+    .hidden rinha_norms_bin_end
+rinha_norms_bin_end:
+    .size rinha_norms_bin_start, rinha_norms_bin_end - rinha_norms_bin_start
+
     .section .note.GNU-stack,"",@progbits

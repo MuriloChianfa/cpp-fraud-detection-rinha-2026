@@ -33,7 +33,6 @@ RUN cmake .. -G Ninja \
     && ninja install \
     && strip --strip-unneeded /usr/local/lib/libdrogon.so* /usr/local/lib/libtrantor.so* || true
 
-# Build
 FROM --platform=linux/amd64 drogon-build AS app-build
 
 WORKDIR /src
@@ -41,14 +40,12 @@ COPY CMakeLists.txt info.json /src/
 COPY src       /src/src
 COPY tools     /src/tools
 COPY resources /src/resources
-COPY cmake     /src/cmake
 
 RUN cmake -S /src -B /src/build -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
     && cmake --build /src/build --parallel "$(nproc)" \
     && strip --strip-unneeded /src/build/api /src/build/lb
 
-# Runtime
 FROM --platform=linux/amd64 alpine:${ALPINE_VERSION} AS runtime
 
 RUN apk add --no-cache \

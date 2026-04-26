@@ -25,10 +25,10 @@ constexpr std::array<int16_t, N> make_lut() {
     return a;
 }
 
-constexpr auto kInstallmentsLut = make_lut<13, 12>();   // 0..12 / 12
-constexpr auto kHourLut         = make_lut<24, 23>();   // 0..23 / 23
-constexpr auto kDowLut          = make_lut<7,  6>();    // 0..6 / 6
-constexpr auto kTxCountLut      = make_lut<21, 20>();   // 0..20 / 20
+constexpr auto kInstallmentsLut = make_lut<13, 12>();
+constexpr auto kHourLut         = make_lut<24, 23>();
+constexpr auto kDowLut          = make_lut<7,  6>();
+constexpr auto kTxCountLut      = make_lut<21, 20>();
 
 [[gnu::always_inline]] inline int16_t quant(float v) noexcept {
     if (v < 0.0f) v = 0.0f;
@@ -38,21 +38,21 @@ constexpr auto kTxCountLut      = make_lut<21, 20>();   // 0..20 / 20
 
 [[gnu::always_inline]] inline int16_t mcc_risk_q(uint32_t mcc) noexcept {
     switch (mcc) {
-        case 5411: return 1229;  // 0.15
-        case 5812: return 2458;  // 0.30
-        case 5912: return 1638;  // 0.20
-        case 5944: return 3686;  // 0.45
-        case 7801: return 6554;  // 0.80
-        case 7802: return 6144;  // 0.75
-        case 7995: return 6963;  // 0.85
-        case 4511: return 2867;  // 0.35
-        case 5311: return 2048;  // 0.25
-        case 5999: return 4096;  // 0.50
-        default:   return 4096;  // 0.50 default per DATASET.md
+        case 5411: return 1229;
+        case 5812: return 2458;
+        case 5912: return 1638;
+        case 5944: return 3686;
+        case 7801: return 6554;
+        case 7802: return 6144;
+        case 7995: return 6963;
+        case 4511: return 2867;
+        case 5311: return 2048;
+        case 5999: return 4096;
+        default:   return 4096;
     }
 }
 
-}  // namespace
+}
 
 void vectorize(const Payload& p, Query& q) noexcept {
     auto& v = q.v;
@@ -109,8 +109,8 @@ void vectorize(const Payload& p, Query& q) noexcept {
     v[12] = mcc_risk_q(p.mcc);
     v[13] = quant(p.merchant_avg_amount / 10000.0f);
 
-    v[14] = 0;  // pad lane
-    v[15] = 0;  // pad lane
+    v[14] = 0;
+    v[15] = 0;
 }
 
-}  // namespace rinha
+}

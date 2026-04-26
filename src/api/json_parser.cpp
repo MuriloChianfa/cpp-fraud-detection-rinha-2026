@@ -32,7 +32,6 @@ struct DateTime {
     return true;
 }
 
-// Howard Hinnant's days_from_civil.
 [[gnu::always_inline]] inline int64_t days_from_civil(int y, unsigned m, unsigned d) noexcept {
     y -= (m <= 2);
     const int era = (y >= 0 ? y : y - 399) / 400;
@@ -42,10 +41,9 @@ struct DateTime {
     return static_cast<int64_t>(era) * 146097 + static_cast<int64_t>(doe) - 719468;
 }
 
-// 0 = Monday .. 6 = Sunday.
 [[gnu::always_inline]] inline uint8_t day_of_week(int y, unsigned m, unsigned d) noexcept {
-    const int64_t days = days_from_civil(y, m, d);  // 1970-01-01 was a Thursday
-    int64_t mod = (days + 3) % 7;                   // shift so Monday == 0
+    const int64_t days = days_from_civil(y, m, d);
+    int64_t mod = (days + 3) % 7;
     if (mod < 0) mod += 7;
     return static_cast<uint8_t>(mod);
 }
@@ -84,14 +82,13 @@ struct ThreadCtx {
     return ctx;
 }
 
-}  // namespace
+}
 
 bool parsePayload(std::string_view body, Payload& out) noexcept {
     if (body.size() == 0 || body.size() >= kScratchSize) return false;
 
     auto& ctx = tctx();
     std::memcpy(ctx.scratch.data(), body.data(), body.size());
-    // simdjson requires the padding region to be readable.
     std::memset(ctx.scratch.data() + body.size(), 0, kPadding);
 
     simdjson::ondemand::document doc;
@@ -127,7 +124,6 @@ bool parsePayload(std::string_view body, Payload& out) noexcept {
         out.day_of_week = day_of_week(req_at.year, req_at.month, req_at.day);
     }
 
-    // string_views point into the scratch buffer and stay valid for the whole call.
     constexpr size_t kMaxKnown = 32;
     std::array<std::string_view, kMaxKnown> known{};
     size_t n_known = 0;
@@ -241,4 +237,4 @@ bool parsePayload(std::string_view body, Payload& out) noexcept {
     return true;
 }
 
-}  // namespace rinha
+}

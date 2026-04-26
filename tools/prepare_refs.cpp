@@ -18,7 +18,7 @@ namespace {
 
 constexpr int    DIM    = 14;
 constexpr int    STRIDE = 16;
-constexpr float  S      = 8192.0f;  // quantisation scale (2^13)
+constexpr float  S      = 8192.0f;
 constexpr int    S_I    = 8192;
 constexpr size_t EXPECTED_N = 100000;
 
@@ -48,10 +48,7 @@ std::vector<char> gunzip_file(const std::string& path) {
 }
 
 inline int16_t quant(double v, int dim) {
-    // dims 5 & 6: sentinel -1 means "no last transaction".
     if ((dim == 5 || dim == 6) && v < 0.0) return static_cast<int16_t>(-S_I);
-    // Booleans live at indices 9, 10, 11, keep them razor-quantised so that
-    // _mm256_madd_epi16 distance contributions are exactly 0 or S^2 per dim.
     if (dim == 9 || dim == 10 || dim == 11) {
         return v > 0.5 ? static_cast<int16_t>(S_I) : int16_t{0};
     }
@@ -73,18 +70,19 @@ inline uint64_t l2_sq(const std::array<int16_t, STRIDE>& v) {
     return s;
 }
 
-}  // namespace
+}
 
 int main(int argc, char** argv) {
-    if (argc != 4) {
+    if (argc != 5) {
         std::fprintf(stderr,
-            "usage: %s <references.json.gz> <out_refs.bin> <out_labels.bin>\n",
+            "usage: %s <references.json.gz> <out_refs.bin> <out_labels.bin> <out_norms.bin>\n",
             argv[0]);
         return 2;
     }
     const std::string in_gz   = argv[1];
     const std::string out_ref = argv[2];
     const std::string out_lab = argv[3];
+    const std::string out_nrm = argv[4];
 
     std::fprintf(stderr, "[prepare_refs] inflating %s\n", in_gz.c_str());
     auto json_buf = gunzip_file(in_gz);
@@ -154,7 +152,6 @@ int main(int argc, char** argv) {
         ++idx;
     }
 
-    // Sort ascending by L2 norm so the threshold drops fast during k-NN search, could we use radix sort?
     std::sort(recs.begin(), recs.end(),
               [](const Record& a, const Record& b){ return a.norm_sq < b.norm_sq; });
 
@@ -179,13 +176,34 @@ int main(int argc, char** argv) {
         if (!f) { std::fprintf(stderr, "[prepare_refs] write %s failed\n", out_lab.c_str()); return 1; }
     }
 
+    {
+        std::ofstream f(out_nrm, std::ios::binary);
+        if (!f) { std::fprintf(stderr, "[prepare_refs] cannot open %s\n", out_nrm.c_str()); return 1; }
+        for (const auto& r : recs) {
+            double n = std::sqrt(static_cast<double>(r.norm_sq));
+            long ln = static_cast<long>(std::floor(n));
+            if (ln < 0) ln = 0;
+            else if (ln > 65535) ln = 65535;
+            uint16_t nrm = static_cast<uint16_t>(ln);
+            f.write(reinterpret_cast<const char*>(&nrm), sizeof(uint16_t));
+        }
+        f.flush();
+        if (!f) { std::fprintf(stderr, "[prepare_refs] write %s failed\n", out_nrm.c_str()); return 1; }
+    }
+
     size_t fraud_total = 0;
-    for (const auto& r : recs) fraud_total += r.label;
+    uint64_t max_norm_sq = 0;
+    for (const auto& r : recs) {
+        fraud_total += r.label;
+        if (r.norm_sq > max_norm_sq) max_norm_sq = r.norm_sq;
+    }
     std::fprintf(stderr,
-        "[prepare_refs] wrote %zu refs (%.1f MB) + %zu labels (%zu fraud)\n",
+        "[prepare_refs] wrote %zu refs (%.1f MB) + %zu labels (%zu fraud) + %zu norms (max |r| ~= %.0f)\n",
         recs.size(),
         double(recs.size() * STRIDE * sizeof(int16_t)) / (1024.0 * 1024.0),
         recs.size(),
-        fraud_total);
+        fraud_total,
+        recs.size(),
+        std::sqrt(static_cast<double>(max_norm_sq)));
     return 0;
 }

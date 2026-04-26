@@ -8,4 +8,4 @@ namespace rinha {
 
 uint8_t knn5_avx2_count(const Query& q) noexcept;
 
-}  // namespace rinha
+}
