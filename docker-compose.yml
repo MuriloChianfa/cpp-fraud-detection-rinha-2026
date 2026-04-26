@@ -19,10 +19,6 @@ x-rinha-ulimits: &rinha-ulimits
     hard: 1048576
   memlock: -1
 
-x-rinha-caps: &rinha-caps
-  - IPC_LOCK
-  - SYS_NICE
-
 services:
   api1:
     <<: *image
@@ -32,7 +28,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    cap_add: *rinha-caps
     deploy:
       resources:
         limits:
@@ -51,7 +46,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    cap_add: *rinha-caps
     deploy:
       resources:
         limits:
@@ -77,7 +71,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    cap_add: *rinha-caps
     deploy:
       resources:
         limits:
