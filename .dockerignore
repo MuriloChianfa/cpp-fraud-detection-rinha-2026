@@ -1,0 +1,10 @@
+build/
+build-*/
+.git/
+.github/
+.vscode/
+.idea/
+*.md
+README*
+docker-compose.yml
+Dockerfile

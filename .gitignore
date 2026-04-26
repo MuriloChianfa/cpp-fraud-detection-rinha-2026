@@ -67,3 +67,27 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+
+build/
+build-*/
+.cache/
+.vscode/
+.idea/
+compile_commands.json
+*.o
+*.obj
+*.so
+*.a
+*.dylib
+*.dll
+*.exe
+*.bin
+k6
+
+# Docker
+.dockerignore.bak
+
+# Generated artefacts
+src/common/refs.bin
+src/common/labels.bin

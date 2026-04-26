@@ -1,0 +1,13 @@
+{
+  "participants": ["Murilo Chianfa"],
+  "social": ["https://github.com/MuriloChianfa", "https://linkedin.com/in/murilochianfa"],
+  "source-code-repo": "https://github.com/murilochianfa/rinha-2026-cpp-drogon",
+  "stack": [
+    "C++17",
+    "Drogon",
+    "simdjson",
+    "SIMD",
+    "Docker",
+    "CMake"
+  ]
+}
