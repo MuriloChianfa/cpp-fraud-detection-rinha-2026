@@ -28,10 +28,11 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
+    cpuset: "0"
     deploy:
       resources:
         limits:
-          cpus: "0.41"
+          cpus: "0.27"
           memory: "165M"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8001/ready || exit 1"]
@@ -46,10 +47,11 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
+    cpuset: "3"
     deploy:
       resources:
         limits:
-          cpus: "0.41"
+          cpus: "0.27"
           memory: "165M"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8002/ready || exit 1"]
@@ -71,10 +73,11 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
+    cpuset: "1,2"
     deploy:
       resources:
         limits:
-          cpus: "0.18"
+          cpus: "0.46"
           memory: "20M"
 
 networks:
