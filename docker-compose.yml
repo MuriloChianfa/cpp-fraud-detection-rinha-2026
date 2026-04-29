@@ -33,8 +33,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.27"
-          memory: "165M"
+          cpus: "0.22"
+          memory: "150M"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8001/ready || exit 1"]
       interval: 5s
@@ -52,8 +52,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.27"
-          memory: "165M"
+          cpus: "0.22"
+          memory: "150M"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8002/ready || exit 1"]
       interval: 5s
@@ -78,8 +78,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.46"
-          memory: "20M"
+          cpus: "0.56"
+          memory: "50M"
 
 networks:
   rinha:
