@@ -31,8 +31,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.40"
-          memory: "140M"
+          cpus: "0.41"
+          memory: "165M"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8001/ready || exit 1"]
       interval: 5s
@@ -49,8 +49,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.40"
-          memory: "140M"
+          cpus: "0.41"
+          memory: "165M"
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8002/ready || exit 1"]
       interval: 5s
@@ -74,7 +74,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.20"
+          cpus: "0.18"
           memory: "20M"
 
 networks:
