@@ -3,6 +3,7 @@ x-image: &image
 
 x-rinha-net-sysctls: &rinha-net-sysctls
   net.core.somaxconn: "65535"
+  net.core.busy_poll: "64"
   net.ipv4.tcp_fastopen: "3"
   net.ipv4.tcp_tw_reuse: "1"
   net.ipv4.tcp_no_metrics_save: "1"
