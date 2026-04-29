@@ -3,7 +3,6 @@ x-image: &image
 
 x-rinha-net-sysctls: &rinha-net-sysctls
   net.core.somaxconn: "65535"
-  net.core.busy_poll: "64"
   net.ipv4.tcp_fastopen: "3"
   net.ipv4.tcp_tw_reuse: "1"
   net.ipv4.tcp_no_metrics_save: "1"
@@ -20,9 +19,6 @@ x-rinha-ulimits: &rinha-ulimits
     hard: 1048576
   memlock: -1
 
-x-rinha-security-opt: &rinha-security-opt
-  - systempaths=unconfined
-
 services:
   api1:
     <<: *image
@@ -32,7 +28,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    security_opt: *rinha-security-opt
     cpuset: "0"
     deploy:
       resources:
@@ -52,7 +47,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    security_opt: *rinha-security-opt
     cpuset: "3"
     deploy:
       resources:
@@ -79,7 +73,6 @@ services:
       - rinha
     sysctls: *rinha-net-sysctls
     ulimits: *rinha-ulimits
-    security_opt: *rinha-security-opt
     cpuset: "1,2"
     deploy:
       resources:
